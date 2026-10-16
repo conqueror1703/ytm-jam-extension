@@ -4,7 +4,7 @@
  * Coordinates state across YouTube Music tabs, content scripts, and popup.
  */
 
-const DEFAULT_SERVER_URL = 'ws://localhost:8080';
+const DEFAULT_SERVER_URL = 'wss://ytm-jam-extension-0u7d.onrender.com';
 let currentServerUrl = DEFAULT_SERVER_URL;
 let socket = null;
 let reconnectTimer = null;

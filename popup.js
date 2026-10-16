@@ -13,20 +13,33 @@ document.addEventListener('DOMContentLoaded', () => {
   const settingsPanel = document.getElementById('settings-panel');
   const serverUrlInput = document.getElementById('server-url-input');
   const serverSaveBtn = document.getElementById('server-save-btn');
+  const serverPresetCloud = document.getElementById('server-preset-cloud');
   const serverPresetLocal = document.getElementById('server-preset-local');
   const activeServerUrlText = document.getElementById('active-server-url-text');
   const serverSaveMsg = document.getElementById('server-save-msg');
 
+  const CLOUD_SERVER_URL = 'wss://ytm-jam-extension-0u7d.onrender.com';
   let currentRoom = null;
   let currentUser = {
     userId: null,
     userName: 'Aman',
     roomId: null
   };
-  let currentServerUrl = 'ws://localhost:8080';
+  let currentServerUrl = CLOUD_SERVER_URL;
   let isConnected = false;
   let lastRenderedView = null; // 'NOT_IN_ROOM' | 'IN_ROOM'
   let pendingRoomCode = '';
+
+  function normalizeServerUrl(url) {
+    let clean = (url || '').trim();
+    if (!clean) clean = CLOUD_SERVER_URL;
+    if (clean.startsWith('http://')) clean = clean.replace('http://', 'ws://');
+    if (clean.startsWith('https://')) clean = clean.replace('https://', 'wss://');
+    if (!clean.startsWith('ws://') && !clean.startsWith('wss://')) {
+      clean = 'wss://' + clean;
+    }
+    return clean.replace(/\/+$/, '');
+  }
 
   function updateServerDisplay(url) {
     if (url) {
@@ -39,13 +52,22 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function saveServerUrl(url) {
-    chrome.runtime.sendMessage({ type: 'BG_SET_SERVER_URL', serverUrl: url }, (res) => {
+    const cleanUrl = normalizeServerUrl(url);
+    updateServerDisplay(cleanUrl);
+
+    chrome.storage.local.set({ serverUrl: cleanUrl }, () => {
+      if (serverSaveMsg) {
+        serverSaveMsg.innerText = 'Saved!';
+        setTimeout(() => { if (serverSaveMsg) serverSaveMsg.innerText = ''; }, 2500);
+      }
+    });
+
+    chrome.runtime.sendMessage({ type: 'BG_SET_SERVER_URL', serverUrl: cleanUrl }, (res) => {
+      if (chrome.runtime.lastError) {
+        console.warn('[YTM-Jam Popup] Background message warning:', chrome.runtime.lastError);
+      }
       if (res && res.serverUrl) {
         updateServerDisplay(res.serverUrl);
-        if (serverSaveMsg) {
-          serverSaveMsg.innerText = 'Saved!';
-          setTimeout(() => { if (serverSaveMsg) serverSaveMsg.innerText = ''; }, 2500);
-        }
       }
     });
   }
@@ -53,6 +75,13 @@ document.addEventListener('DOMContentLoaded', () => {
   if (settingsToggleBtn && settingsPanel) {
     settingsToggleBtn.addEventListener('click', () => {
       settingsPanel.classList.toggle('hidden');
+    });
+  }
+
+  if (serverPresetCloud && serverUrlInput) {
+    serverPresetCloud.addEventListener('click', () => {
+      serverUrlInput.value = CLOUD_SERVER_URL;
+      saveServerUrl(CLOUD_SERVER_URL);
     });
   }
 
@@ -80,6 +109,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (data.roomId) currentUser.roomId = data.roomId;
     if (data.lastRoomState) currentRoom = data.lastRoomState;
     if (data.serverUrl) updateServerDisplay(data.serverUrl);
+    else updateServerDisplay(CLOUD_SERVER_URL);
 
     // Only render if room state transitioned
     if (currentRoom) {

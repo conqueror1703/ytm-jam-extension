@@ -537,15 +537,16 @@
 
   <div id="settings-panel" class="settings-panel hidden">
     <div class="card-title" style="margin-bottom: 0;">Server Settings</div>
-    <p style="font-size: 11px; color: var(--ytm-jam-text-muted);">Sync Server WebSocket URL (Render / Cloud or Localhost):</p>
-    <input type="text" id="server-url-input" class="input" style="font-size: 12px; padding: 7px 10px;" placeholder="wss://your-app.onrender.com" />
+    <p style="font-size: 11px; color: var(--ytm-jam-text-muted);">Sync Server WebSocket URL (Render Cloud or Localhost):</p>
+    <input type="text" id="server-url-input" class="input" style="font-size: 12px; padding: 7px 10px;" placeholder="wss://ytm-jam-extension-0u7d.onrender.com" />
     <div style="display: flex; gap: 6px;">
-      <button id="server-preset-local" class="settings-preset-btn" type="button">Localhost</button>
-      <button id="server-save-btn" class="settings-save-btn" type="button">Save & Reconnect</button>
+      <button id="server-preset-cloud" class="settings-preset-btn" type="button">☁️ Cloud</button>
+      <button id="server-preset-local" class="settings-preset-btn" type="button">💻 Local</button>
+      <button id="server-save-btn" class="settings-save-btn" type="button">Save & Connect</button>
     </div>
-    <div style="font-size: 10px; color: #71717a; display: flex; justify-content: space-between;">
-      <span>Current: <span id="active-server-url-text" style="color: #d4d4d8;">ws://localhost:8080</span></span>
-      <span id="server-save-msg" style="color: #22c55e;"></span>
+    <div style="font-size: 10px; color: #71717a; display: flex; justify-content: space-between; align-items: center; margin-top: 2px;">
+      <span style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 210px;">Current: <span id="active-server-url-text" style="color: #d4d4d8;">wss://ytm-jam-extension-0u7d.onrender.com</span></span>
+      <span id="server-save-msg" style="color: #22c55e; font-weight: 600;"></span>
     </div>
   </div>
 
