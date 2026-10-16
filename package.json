@@ -1,0 +1,21 @@
+{
+  "name": "ytm-jam-extension",
+  "version": "1.0.0",
+  "description": "Real-time Spotify Jam equivalent for YouTube Music with shared queue and synchronized playback.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "keywords": [
+    "youtube-music",
+    "jam",
+    "sync",
+    "websocket",
+    "chrome-extension"
+  ],
+  "author": "Aman Singh",
+  "license": "MIT",
+  "dependencies": {
+    "ws": "^8.18.0"
+  }
+}
