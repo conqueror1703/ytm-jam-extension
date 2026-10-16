@@ -29,20 +29,11 @@ Deploying YouTube Music Jam for you and your friends requires two simple pieces:
 
 ### Step 1: Deploy the WebSocket Backend (100% Free on Render.com)
 
-Render provides a completely free Web Service tier that supports WebSockets 24/7:
+You can deploy the backend with **1 click**:
 
-1. **Push your code to GitHub**:
-   - Create a new public or private repository on [GitHub](https://github.com/new) named `ytm-jam-extension`.
-   - Push your code:
-     ```bash
-     git add .
-     git commit -m "feat: initial release v1.0.0"
-     git branch -M main
-     git remote add origin https://github.com/<your-username>/ytm-jam-extension.git
-     git push -u origin main
-     ```
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/conqueror1703/ytm-jam-extension)
 
-2. **Deploy on Render**:
+Or manually configure it on Render:
    - Go to [dashboard.render.com](https://dashboard.render.com/) and sign in (Free).
    - Click **New +** > **Web Service**.
    - Select **Build and deploy from a Git repository** and connect your `ytm-jam-extension` repo.
